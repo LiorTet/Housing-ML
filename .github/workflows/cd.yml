@@ -1,0 +1,38 @@
+name: cd
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 3 * * 1"
+
+# Same make targets as a laptop. Jobs share state only through the MLflow server.
+# Runs once a shared MLflow server exists: repo variable CD_ENABLED=true + secret MLFLOW_TRACKING_URI.
+jobs:
+  train:
+    if: vars.CD_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: prod
+    env:
+      ENV: prod
+      MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+      TRIGGER: ${{ github.event_name == 'schedule' && 'scheduled' || 'manual' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: make install
+      - run: make pipeline
+      - run: make leaderboard
+
+  approve:
+    needs: train
+    runs-on: ubuntu-latest
+    environment: prod-approval  # required reviewers: manual gate before champion moves
+    env:
+      ENV: prod
+      MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: make install
+      - run: make approve

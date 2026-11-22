@@ -1,0 +1,14 @@
+env: dev
+tracking_uri: sqlite:///{root}/mlflow/dev.db
+artifact_root: mlflow/dev-artifacts
+model_name: housing-value
+bronze_path: data/bronze/housing.csv
+data_dir: data/dev
+sample_fraction: 0.3
+seed: 42
+test_size: 0.2
+cv_folds: 3
+min_improvement: 0.0
+auto_promote: true
+refresh_seconds: 5
+prediction_log: logs/predictions_dev.jsonl

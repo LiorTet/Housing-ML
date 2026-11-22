@@ -1,0 +1,11 @@
+name: gbm_tuning
+runs:
+  - name: gbm_deeper
+    model: gradient_boosting
+    engineered: true
+    params: {max_iter: 600, learning_rate: 0.05, max_leaf_nodes: 63}
+  - name: gbm_log_target
+    model: gradient_boosting
+    engineered: true
+    log_target: true
+    params: {max_iter: 600, learning_rate: 0.05, max_leaf_nodes: 63}

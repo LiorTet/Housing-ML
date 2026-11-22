@@ -1,0 +1,45 @@
+[project]
+name = "housing"
+version = "0.1.0"
+description = "California housing value model: data layers, tracked experiments, gated registry, serving."
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "mlflow>=3.0",
+    "pandas>=2.2",
+    "python-multipart>=0.0.34",
+    "pyyaml>=6.0",
+    "requests>=2.32",
+    "scikit-learn>=1.5",
+    "uvicorn>=0.30",
+]
+
+[project.optional-dependencies]
+ui = ["streamlit>=1.40"]
+
+[dependency-groups]
+analysis = [
+    "ipykernel>=7.4.0",
+    "matplotlib>=3.11.2",
+    "nbconvert>=7.17.2",
+]
+dev = ["httpx>=0.27", "pytest>=8.0", "ruff>=0.6"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning", "ignore::UserWarning"]

@@ -1,0 +1,18 @@
+name: baseline
+runs:
+  - name: linear
+    model: linear
+  - name: linear_log_target
+    model: linear
+    log_target: true
+  - name: random_forest
+    model: random_forest
+    params: {n_estimators: 100, min_samples_leaf: 2}
+  - name: random_forest_engineered
+    model: random_forest
+    engineered: true
+    params: {n_estimators: 100, min_samples_leaf: 2}
+  - name: gradient_boosting
+    model: gradient_boosting
+    engineered: true
+    params: {max_iter: 300, learning_rate: 0.1}
